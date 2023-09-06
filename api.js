@@ -2,17 +2,16 @@ function loadData(limit) {
   // load data
   fetch("https://openapi.programming-hero.com/api/ai/tools")
     .then((res) => res.json())
-    .then((data) => displayData(data.data.tools,limit));
+    .then((data) => displayData(data.data.tools, limit));
 }
-function displayData(data,limit) {
+function displayData(data, limit) {
   let SeeMoreBtn = document.getElementById("see-more");
-if(limit && data.length>6){
-
-  // data = data.splice(0, 6);
-  SeeMoreBtn.classList.remove('d-none')
-}else{
-  SeeMoreBtn.classList.add('d-none')
-}
+  if (limit && data.length > 6) {
+    // data = data.splice(0, 6);
+    SeeMoreBtn.classList.remove("d-none");
+  } else {
+    SeeMoreBtn.classList.add("d-none");
+  }
   console.log(data);
   for (const technology of data) {
     console.log(technology);
@@ -36,34 +35,41 @@ if(limit && data.length>6){
         <h2>${technology.name}</h2> 
         <h2>${technology.published_in}</h2> 
         </div>
+        <button type="button" class="btn btn-primary" onclick=detailsOfTechnology('${technology.id}')>Details</button>
   </div>
         `;
     // append child
     cardContainer.appendChild(div);
   }
-  spinnerToggle(false)
+  spinnerToggle(false);
 }
 // see more button functionalities
-function searchProcess(limit){
-  loadData(limit)
+function searchProcess(limit) {
+  loadData(limit);
 }
 function seeMore() {
-  spinnerToggle(true)
+  spinnerToggle(true);
   let SeeMoreBtn = document.getElementById("see-more");
-searchProcess()
+  searchProcess();
   SeeMoreBtn.classList.add("d-none");
 }
-searchProcess(6)
+searchProcess(6);
 // console.log("ddd");
-// spinner toggle handled 
-function spinnerToggle(isLoading){
-  const spinner=document.getElementById('spinner');
-  if(isLoading){
-    spinner.classList.remove('d-none')
+// spinner toggle handled
+function spinnerToggle(isLoading) {
+  const spinner = document.getElementById("spinner");
+  if (isLoading) {
+    spinner.classList.remove("d-none");
+  } else {
+    spinner.classList.add("d-none");
   }
-  else{
-    spinner.classList.add('d-none')
-
-  }
+}
+const detailsOfTechnology = (id) => {
+  fetch(`https://openapi.programming-hero.com/api/ai/tool/${id}`)
+  .then(res=>res.json())
+  .then(details=>displayDetailsOfTechnology(details.data))
+};
+const displayDetailsOfTechnology=(details)=>{
+  console.log(details);
 
 }
