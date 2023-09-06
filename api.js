@@ -35,9 +35,12 @@ function displayData(data, limit) {
         <h2>${technology.name}</h2> 
         <h2>${technology.published_in}</h2> 
         </div>
-        <button type="button" class="btn btn-primary" onclick=detailsOfTechnology('${technology.id}')>Details</button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#technologyModal" onclick=detailsOfTechnology('${technology.id}')>
+        Details
+</button>
   </div>
         `;
+        
     // append child
     cardContainer.appendChild(div);
   }
@@ -71,5 +74,15 @@ const detailsOfTechnology = (id) => {
 };
 const displayDetailsOfTechnology=(details)=>{
   console.log(details);
+  const features=document.getElementById('features')
+  const integrations=document.getElementById('integrations')
+  features.innerHTML=`
+  <h1>${details.features['1'].feature_name}</h1>
+  <h1>${details.features['1'].feature_name}</h1>
+  <h1>${details.features['1'].feature_name}</h1>
+  `
+  integrations.innerHTML=`
+  <h2>${details.integrations[0]}</h2>`
+ 
 
 }
