@@ -40,7 +40,7 @@ function displayData(data, limit) {
 </button>
   </div>
         `;
-        
+
     // append child
     cardContainer.appendChild(div);
   }
@@ -69,20 +69,56 @@ function spinnerToggle(isLoading) {
 }
 const detailsOfTechnology = (id) => {
   fetch(`https://openapi.programming-hero.com/api/ai/tool/${id}`)
-  .then(res=>res.json())
-  .then(details=>displayDetailsOfTechnology(details.data))
+    .then((res) => res.json())
+    .then((details) => displayDetailsOfTechnology(details.data));
 };
-const displayDetailsOfTechnology=(details)=>{
+const displayDetailsOfTechnology = (details) => {
   console.log(details);
-  const features=document.getElementById('features')
-  const integrations=document.getElementById('integrations')
-  features.innerHTML=`
-  <h1>${details.features['1'].feature_name}</h1>
-  <h1>${details.features['1'].feature_name}</h1>
-  <h1>${details.features['1'].feature_name}</h1>
-  `
-  integrations.innerHTML=`
-  <h2>${details.integrations[0]}</h2>`
- 
+  const technologyInfo = document.getElementById("technology-body");
 
-}
+  technologyInfo.innerHTML = `
+  <div class="row">
+          <div class="col-md-6 border border-primary bg-info-subtle">
+          <div>
+          <h6>${details.description}</h6>
+          </div>
+          <div class='d-flex'>
+          <div class='bg-success-subtle m-2 p-2 rounded text-danger'>
+          <b>${details.pricing[0].price}</b>
+          <b>${details.pricing[0].plan}</b>
+          </div>
+          <div class='bg-success-subtle m-2 p-2 rounded text-success'>
+          <b>${details.pricing[1].price}</b>
+          <b>${details.pricing[1].plan}</b>
+          </div>
+          <div class='bg-success-subtle m-2 p-2 rounded text-primary'>
+          <b>${details.pricing[2].price}</b>
+          <b>${details.pricing[2].plan}</b>
+          </div>
+          </div>
+            <div class="row">
+              <div class="col-md-6 " >
+              <h4>Features</h4>
+              <ul>
+              <li>${details.features["1"].feature_name}</li>
+              <li>${details.features["1"].feature_name}</li>
+              <li>${details.features["1"].feature_name}</li>
+              </ul>
+              </div>
+              <div class="col-md-6 " >
+              <h4>Integrations</h4>
+              <ul>
+              <li>${details.integrations[0]}</li>
+              <li>${details.integrations[1]}</li>
+              <li>${details.integrations[2]}</li>
+            
+              </ul>
+              
+              </div>
+            </div>
+
+
+          </div>
+          <div class="col-md-6 border border-primary">.col-md-4 .ms-auto</div>
+        </div>`;
+};
