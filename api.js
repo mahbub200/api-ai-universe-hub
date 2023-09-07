@@ -79,17 +79,19 @@ const displayDetailsOfTechnology = (details) => {
   technologyInfo.innerHTML = `
   <div class="row">
           <div class="col-md-6 border border-primary bg-info-subtle">
-          <div>
-          <h6>${details.description}</h6>
-          </div>
+            <div>
+              <h6>${details.description}</h6>
+            </div>
           <div class='d-flex'>
+
           <div class='bg-success-subtle m-2 p-2 rounded text-danger'>
-          <b>${details.pricing[0].price}</b>
-          <b>${details.pricing[0].plan}</b>
+            <b>${details.pricing[0].price}</b>
+            <b>${details.pricing[0].plan}</b>
           </div>
+
           <div class='bg-success-subtle m-2 p-2 rounded text-success'>
-          <b>${details.pricing[1].price}</b>
-          <b>${details.pricing[1].plan}</b>
+            <b>${details.pricing[1].price}</b>
+            <b>${details.pricing[1].plan}</b>
           </div>
           <div class='bg-success-subtle m-2 p-2 rounded text-primary'>
           <b>${details.pricing[2].price}</b>
@@ -101,9 +103,10 @@ const displayDetailsOfTechnology = (details) => {
               <h4>Features</h4>
               <ul>
               <li>${details.features["1"].feature_name}</li>
-              <li>${details.features["1"].feature_name}</li>
-              <li>${details.features["1"].feature_name}</li>
-              </ul>
+              <li>${details.features["2"].feature_name}</li>
+              <li>${details.features["3"].feature_name}</li>
+              
+             
               </div>
               <div class="col-md-6 " >
               <h4>Integrations</h4>
@@ -119,6 +122,9 @@ const displayDetailsOfTechnology = (details) => {
 
 
           </div>
-          <div class="col-md-6 border border-primary">.col-md-4 .ms-auto</div>
+          <div class="col-md-6 border border-primary"><img src='${details.image_link[0]}' class='img-fluid'/>
+          <h4>${details.input_output_examples[0].input}</h4>
+          <p>${details.input_output_examples[0].output}</p>
+          </div>
         </div>`;
 };
