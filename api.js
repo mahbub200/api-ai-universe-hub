@@ -1,3 +1,6 @@
+let currentIndex = 0; // Tracks the current index of data being displayed
+const increment = 5;
+
 function loadData(limit) {
   // load data
   fetch("https://openapi.programming-hero.com/api/ai/tools")
@@ -6,36 +9,38 @@ function loadData(limit) {
 }
 function displayData(data, limit) {
   let SeeMoreBtn = document.getElementById("see-more");
-  if (limit && data.length > 6) {
-    // data = data.splice(0, 6);
-    SeeMoreBtn.classList.remove("d-none");
-  } else {
-    SeeMoreBtn.classList.add("d-none");
-  }
-  console.log(data);
-  for (const technology of data) {
+  let cardContainer = document.getElementById("card-container");
+
+  // Determine the slice of data to display
+  let endIndex = currentIndex + increment;
+  let partOfData = data.slice(currentIndex, endIndex);
+
+  partOfData.forEach((technology) => {
     console.log(technology);
-    let cardContainer = document.getElementById("card-container");
     let div = document.createElement("div");
     div.classList.add("col");
 
     // card info
     div.innerHTML = `
     <div class="card">
-    <img src="${technology.image}" class="card-img-top" alt="...">
+    <img src="${
+      technology.image
+    }" alt='no image found ' height= '200px'class="card-img-top" alt="...">
     <div class="card-body">
     <h5 class="card-title">features:
           
     </h5>
-    <li>${technology.features[0]}</li>
-    <li>${technology.features[1]}</li>
-    <li>${technology.features[2]}</li>
+    <li>${technology.features[0] || "no data found"}</li>
+    <li>${technology.features[1] || "no data found"}</li>
+    <li>${technology.features[2] || "no data found"}</li>
     </div>
     <div class="card-footer">
         <h2>${technology.name}</h2> 
         <h2>${technology.published_in}</h2> 
         </div>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#technologyModal" onclick=detailsOfTechnology('${technology.id}')>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#technologyModal" onclick=detailsOfTechnology('${
+          technology.id
+        }')>
         Details
 </button>
   </div>
@@ -43,21 +48,24 @@ function displayData(data, limit) {
 
     // append child
     cardContainer.appendChild(div);
+  });
+
+  currentIndex += increment; // Update the current index
+
+  // Hide the button if we have loaded all the data
+  if (currentIndex >= data.length) {
+    SeeMoreBtn.classList.add("d-none");
   }
   spinnerToggle(false);
 }
-// see more button functionalities
-function searchProcess(limit) {
-  loadData(limit);
-}
+
+loadData();
 function seeMore() {
   spinnerToggle(true);
-  let SeeMoreBtn = document.getElementById("see-more");
-  searchProcess();
-  SeeMoreBtn.classList.add("d-none");
+
+  loadData();
 }
-searchProcess(6);
-// console.log("ddd");
+
 // spinner toggle handled
 function spinnerToggle(isLoading) {
   const spinner = document.getElementById("spinner");
@@ -90,7 +98,7 @@ const displayDetailsOfTechnology = (details) => {
           </div>
 
           <div class='bg-success-subtle m-2 p-2 rounded text-success'>
-            <b>${details.pricing[1].price}</b>
+            <b>${details?.pricing[1]?.price}</b>
             <b>${details.pricing[1].plan}</b>
           </div>
           <div class='bg-success-subtle m-2 p-2 rounded text-primary'>
@@ -116,13 +124,24 @@ const displayDetailsOfTechnology = (details) => {
               <li>${details.integrations[2]}</li>
             
               </ul>
-              
+             
               </div>
             </div>
 
 
           </div>
-          <div class="col-md-6 border border-primary"><img src='${details.image_link[0]}' class='img-fluid'/>
+          <div class="col-md-6 border border-primary"> <div class="position-relative">
+          <img src="${
+            details.image_link[0]
+          }" alt="no image found" height="200px" class="img-fluid"/>
+          ${
+            details.accuracy.score > 0
+              ? `<div class="position-absolute top-0 end-0 bg-light text-dark p-2 m-2 rounded">
+                  <p>${(details.accuracy.score * 100).toFixed(2)} % accuracy</p>
+                 </div>`
+              : ""
+          }
+        </div>
           <h4>${details.input_output_examples[0].input}</h4>
           <p>${details.input_output_examples[0].output}</p>
           </div>
